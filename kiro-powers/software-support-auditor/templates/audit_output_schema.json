@@ -1,0 +1,75 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CodebaseSupportAuditPayload",
+  "type": "object",
+  "required": [
+    "audit_target",
+    "audit_timestamp",
+    "overall_readiness",
+    "summary_counts",
+    "error_catalog",
+    "action_items"
+  ],
+  "properties": {
+    "audit_target": {
+      "type": "string",
+      "description": "Path or repository name audited"
+    },
+    "audit_timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp of audit execution"
+    },
+    "overall_readiness": {
+      "type": "string",
+      "enum": ["HIGH", "MEDIUM", "LOW"],
+      "description": "Overall support readiness classification"
+    },
+    "summary_counts": {
+      "type": "object",
+      "required": [
+        "l0_self_service",
+        "l1_service_desk",
+        "l2_app_support",
+        "l3_engineering",
+        "l4_vendor"
+      ],
+      "properties": {
+        "l0_self_service": { "type": "integer", "minimum": 0 },
+        "l1_service_desk": { "type": "integer", "minimum": 0 },
+        "l2_app_support": { "type": "integer", "minimum": 0 },
+        "l3_engineering": { "type": "integer", "minimum": 0 },
+        "l4_vendor": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "error_catalog": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "error_identifier",
+          "source_file",
+          "line_number",
+          "root_cause_category",
+          "assigned_tier",
+          "handling_sop"
+        ],
+        "properties": {
+          "error_identifier": { "type": "string" },
+          "source_file": { "type": "string" },
+          "line_number": { "type": "integer" },
+          "root_cause_category": { "type": "string" },
+          "assigned_tier": {
+            "type": "string",
+            "enum": ["L0", "L1", "L2", "L3", "L4"]
+          },
+          "handling_sop": { "type": "string" }
+        }
+      }
+    },
+    "action_items": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  }
+}
